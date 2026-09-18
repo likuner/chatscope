@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Friday - A helpful command-line assistant powered by DeepSeek."""
+"""Friday - A helpful command-line assistant powered by AI."""
 
 import asyncio
-import sys
 from agentscope.agent import Agent
 from agentscope.model import OpenAIChatModel
 from agentscope.credential import OpenAICredential
@@ -17,17 +16,20 @@ STREAM_DELAY = 0.03
 
 
 async def main():
+    # Get current model configuration
+    model_config = settings.llm_config
+    
     credential = OpenAICredential(
-        api_key=settings.DEEPSEEK_API_KEY,
-        base_url="https://api.deepseek.com"
+        api_key=model_config["api_key"],
+        base_url=model_config["base_url"]
     )
 
     model = OpenAIChatModel(
         credential=credential,
-        model="deepseek-chat",
+        model=model_config["model_name"],
         parameters=OpenAIChatModel.Parameters(
-            temperature=0.7,
-            max_tokens=2048,
+            temperature=settings.TEMPERATURE,
+            max_tokens=settings.MAX_TOKENS,
         )
     )
 
@@ -38,7 +40,7 @@ async def main():
     )
 
     print("=" * 60)
-    print("Friday - Your AI Assistant")
+    print(f"Friday - Your AI Assistant (Using {settings.MODEL_PROVIDER.upper()})")
     print("=" * 60)
     print("Type 'exit' or 'quit' to end the conversation.\n")
 
