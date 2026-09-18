@@ -2,28 +2,16 @@
 """Friday - A helpful command-line assistant powered by AI."""
 
 import asyncio
-import logging
 from agentscope.agent import Agent
 from agentscope.model import OpenAIChatModel
 from agentscope.credential import OpenAICredential
 from agentscope.message import UserMsg
 from agentscope.event import TextBlockDeltaEvent, TextBlockStartEvent, TextBlockEndEvent
 from config import settings
+from logger_config import setup_logging
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('friday.log', encoding='utf-8')
-    ]
-)
-logger = logging.getLogger(__name__)
-
-# 设置 agentscope 和 openai 库的日志级别为 WARNING，避免过多输出
-logging.getLogger('agentscope').setLevel(logging.WARNING)
-logging.getLogger('openai').setLevel(logging.WARNING)
-logging.getLogger('httpx').setLevel(logging.WARNING)
+# 配置日志系统
+logger = setup_logging()
 
 # Streaming speed control (in seconds)
 # Adjust this value to control output speed:
